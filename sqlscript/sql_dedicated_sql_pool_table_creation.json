@@ -1,0 +1,17 @@
+{
+	"name": "sql_dedicated_sql_pool_table_creation",
+	"properties": {
+		"content": {
+			"query": "CREATE TABLE [dbo].[CutomerDetails](\n\t[custId] [smallint] ,\n\t[CustName] [varchar](200) ,\n\t[CustCity] [varchar](200) ,\n\t[ProdPurchaseDate] [date] ,\n\t[ProdQty] [tinyint] ,\n\t[ProdPrice] [decimal](6, 2) \n) \nWITH\n( DISTRIBUTION = ROUND_ROBIN);\n\n-- How to distribute the data across the compute node\n-- DISTRIBUTION Types \n-- 1. HASH KEY  --- We need to specifiy the column \n-- 2. ROUND_ROBIN\n-- 2. REPLICATE\n\n\n\n\n--custId,CustName,CustCity,ProdPurchaseDate,ProdQty,ProdPrice\n\nSELECT * FROM [dbo].[CutomerDetails]\n\nINSERT INTO [dbo].[CutomerDetails]\nVALUES (1006,'Pravin Patil','Pune','2025-08-19',2,1350.60)\n\n\n--- COPY INTO \n\n\n\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "dsp_dev001",
+				"poolName": "dsp_dev001"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

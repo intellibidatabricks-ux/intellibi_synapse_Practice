@@ -1,0 +1,17 @@
+{
+	"name": "sql_dsqlpool_hashkey_copy_into",
+	"properties": {
+		"content": {
+			"query": "-- How to distribute the data across the compute node\n-- DISTRIBUTION Types \n-- 1. HASH KEY  --- We need to specifiy the column \n-- 2. ROUND_ROBIN\n-- 2. REPLICATE\n\n\nDROP TABLE  dbo.VS\nCREATE TABLE dbo.VS\n(\n    STUDYID VARCHAR(200),\n    DOMAIN VARCHAR(200),\n    USUBJID VARCHAR(200),\n    VSSEQ VARCHAR(200),\n    VSTESTCD VARCHAR(200),\n    VSTEST VARCHAR(200),\n    VSORRES VARCHAR(200),\n    VSORRESU VARCHAR(200),\n    VISITNUM VARCHAR(200),\n    VISIT VARCHAR(200),\n    VSDTC VARCHAR(200),\n    MODIFIED_TS VARCHAR(200)\n)\nWITH\n( DISTRIBUTION = HASH (USUBJID));\n\n\nSELECT * FROM VS;\n\n\nCOPY INTO [dbo].[vs] FROM 'https://stsyndemo01.blob.core.windows.net/synapse-files/clintrail_data_files/VS/VS.csv'\nWITH (\n   FIELDTERMINATOR=',',\n   ROWTERMINATOR='0x0A'\n) OPTION (LABEL = 'COPY: dbo.VS');\n\n\nSELECT COUNT(*) FROM VS;\n\n\n\nDBCC PDW_SHOWSPACEUSED('dbo.VS');\n\n\nSELECT USUBJID, COUNT(*) AS CNT FROM VS GROUP BY USUBJID;\n\n\n\n\n-------------------------------------------------------------\n\nCREATE TABLE LB (\n        STUDYID VARCHAR(200),\n        DOMAIN VARCHAR(200),\n        USUBJID VARCHAR(200),\n        LBSEQ VARCHAR(200),\n        LBTESTCD VARCHAR(200),  \n        LBTEST VARCHAR(200),\n        LBCAT VARCHAR(200),\n        LBORRES VARCHAR(200),\n        LBORRESU VARCHAR(200),\n        LBORNRLO VARCHAR(200),\n        LBORNRHI VARCHAR(200),\n        LBNRIND VARCHAR(200),\n        VISITNUM VARCHAR(200),\n        VISIT VARCHAR(200),\n        LBDTC VARCHAR(200),\n        MODIFIED_TS VARCHAR(200)\n    )\n    WITH (DISTRIBUTION  = ROUND_ROBIN)\n\n\nCOPY INTO [dbo].[LB] FROM 'https://stsyndemo01.blob.core.windows.net/synapse-files/clintrail_data_files/LB/LB.csv'\nWITH (\n   FIELDTERMINATOR=',',\n   ROWTERMINATOR='0x0A'\n) OPTION (LABEL = 'COPY: dbo.LB');\n\n\n\nSELECT * FROM LB;\n\nSELECT COUNT(*) AS CNT FROM LB;\n\nDBCC PDW_SHOWSPACEUSED('dbo.LB');\n\n\nCREATE TABLE TS\n(\n    STUDYID VARCHAR(200),\n    DOMAIN VARCHAR(200),\n    TSPARMCD VARCHAR(200),\n    TSPARM VARCHAR(200),\n    TSVAL VARCHAR(200),\n    MODIFIED_TS VARCHAR(200)\n) WITH (DISTRIBUTION = REPLICATE )\n\n\n\nCOPY INTO [dbo].[TS] FROM 'https://stsyndemo01.blob.core.windows.net/synapse-files/clintrail_data_files/TS/TS.csv'\nWITH (\n   FIELDTERMINATOR=',',\n   ROWTERMINATOR='0x0A'\n) OPTION (LABEL = 'COPY: dbo.TS');\n\n\nSELECT * FROM [dbo].[TS]\n\n\nDBCC PDW_SHOWSPACEUSED('dbo.TS');\n\n----------------------------------------------------------------->\n\n\n\n\n\n\n\n\n\n\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "dsp_dev001",
+				"poolName": "dsp_dev001"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
