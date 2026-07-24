@@ -1,0 +1,1 @@
+# intellibi_synapse_Practice
