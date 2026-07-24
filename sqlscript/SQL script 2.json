@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 2",
+	"properties": {
+		"content": {
+			"query": "-- This is auto-generated code\nSELECT\n    TOP 100 *\nFROM\n    OPENROWSET(\n        BULK 'https://stclintraildev001.dfs.core.windows.net/silver/cm/',\n        FORMAT = 'DELTA'\n    ) AS [result]\n\n\nSELECT * FROM OPENROWSET\n(\n    BULK 'silver/cm',\n    DATA_SOURCE  = 'ds_stsyn_clintrail',\n    FORMAT ='DELTA'\n) AS CM ;",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "db_clintrail_dev",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

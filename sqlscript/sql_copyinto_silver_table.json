@@ -1,0 +1,17 @@
+{
+	"name": "sql_copyinto_silver_table",
+	"properties": {
+		"content": {
+			"query": "CREATE SCHEMA silver\n\nCREATE TABLE silver.ta\n(\n    STUDYID varchar(200),\n    DOMAIN varchar(200),\n    ARMCD varchar(200),\n    ARM varchar(200),\n    TAETORD varchar(200),\n    ETCD varchar(200),\n    ELEMENT varchar(200),\n    LANDING_LOAD_TS varchar(200)\n\n);\n\n--DROP TABLE \n\nCOPY INTO silver.ta \n(STUDYID,DOMAIN,ARMCD,ARM,TAETORD,ETCD,ELEMENT,LANDING_LOAD_TS)\nFROM 'https://stsyndemo01.blob.core.windows.net/synapse-files/bronze/TA/*.parquet'\nWITH (\n   FILE_TYPE  = 'PARQUET',\n    AUTO_CREATE_TABLE = 'ON'\n);\n\n\n\nSELECT * FROM silver.ta \n\nTRUNCATE TABLE silver.ta \n\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "dsp_dev001",
+				"poolName": "dsp_dev001"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
