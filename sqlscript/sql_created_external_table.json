@@ -1,0 +1,17 @@
+{
+	"name": "sql_created_external_table",
+	"properties": {
+		"content": {
+			"query": "DROP EXTERNAL FILE FORMAT ff_csv\n\nDROP EXTERNAL table ta\n\nCREATE EXTERNAL FILE FORMAT ff_csv\nWITH (  \n    FORMAT_TYPE = DELIMITEDTEXT,\n    FORMAT_OPTIONS ( FIELD_TERMINATOR = ',', STRING_DELIMITER = '\"', FIRST_ROW = 2 )\n);\n\n-- CREATE EXTERNAL FILE FORMAT ff_parquet WITH (  FORMAT_TYPE = PARQUET );\n\n-- CREATE EXTERNAL FILE FORMAT ff_delta WITH (  FORMAT_TYPE = DELTA );\n\n----------------------------------------\n\nCREATE EXTERNAL TABLE ta\n(\n    STUDYID VARCHAR(200),\n    DOMAIN VARCHAR(200),\n    ARMCD VARCHAR(200),\n    ARM VARCHAR(200),\n    TAETORD INT,\n    ETCD VARCHAR(200),\n    ELEMENT VARCHAR(200)\n)\nWITH (\n    LOCATION = 'synapse-files/clintrail_data_files/TA/TA.csv',\n    DATA_SOURCE = ds_stsyn011_file_data,\n    FILE_FORMAT = ff_csv\n);\n\n\nSELECT * FROM dbo.ta;\n\nSELECT * FROM dbo.ta WHERE ARMCD = 'ARMA';\n\nSELECT STUDYID,COUNT(*) AS cnt from ta GROUP BY STUDYID;\n\n-- INSERT INTO ta (STUDYID,DOMAIN,ARMCD,ARM,TAETORD,ETCD,ELEMENT)\n-- VALUES ('CT-CARD-002','TA','PBO','Placebo',1,'TRT','Treatment')\n\n-- DML Operations are not supported with external tables.\n-- Total execution time: 00:00:00.246\n\n\n\n\n\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "db_clintrail_dev",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

@@ -1,0 +1,17 @@
+{
+	"name": "sql_read_csv_syn_files",
+	"properties": {
+		"content": {
+			"query": "SELECT * FROM OPENROWSET\n(\n    BULK 'synapse-files/clintrail_data_files/TA/TA.csv',\n    DATA_SOURCE  = 'ds_stsyn011_file_data',\n    FORMAT ='CSV',\n    PARSER_VERSION = '2.0',\n    HEADER_ROW = TRUE\n) AS TA\n\n\n-- SELECT * FROM TA;\n\n-- SELECT * FROM TA WHERE ID= 38E84\n-- Read .csv File as SQL Table;\n\nSELECT * FROM OPENROWSET\n(\n    BULK 'synapse-files/clintrail_data_files/TS/TS.csv',\n    DATA_SOURCE  = 'ds_stsyn011_file_data',\n    FORMAT ='CSV',\n    PARSER_VERSION = '2.0',\n    HEADER_ROW = TRUE\n) AS TS ;\n\n-- Filter Operation on file\nSELECT * FROM OPENROWSET\n(\n    BULK 'synapse-files/clintrail_data_files/TS/TS.csv',\n    DATA_SOURCE  = 'ds_stsyn011_file_data',\n    FORMAT ='CSV',\n    PARSER_VERSION = '2.0',\n    HEADER_ROW = TRUE\n) AS TS WHERE STUDYID = 'CT-ONCO-001';\n\nSELECT *, UPPER(TSPARM) AS NEW_UPP_TSPARM FROM OPENROWSET\n(\n    BULK 'synapse-files/clintrail_data_files/TS/TS.csv',\n    DATA_SOURCE  = 'ds_stsyn011_file_data',\n    FORMAT ='CSV',\n    PARSER_VERSION = '2.0',\n    HEADER_ROW = TRUE\n) AS TS WHERE DOMAIN = 'TS';\n\n-- Data Source : https://stsyndemo01.blob.core.windows.net/\n--Sub Folder & File Location: synapse-files/clintrail_data_files/TA/TA.csv\n\n--https://stsyndemo01.blob.core.windows.net/synapse-files/clintrail_data_files/TA/TA.csv\n\n-------------------------\n\nhttps://stclintraildev001.blob.core.windows.net/landing/src/CM/ingest_date=2026-07-09/CM_20260709123006.parquet\n\n\nSELECT * FROM OPENROWSET\n(\n    BULK 'landing/src/CM/*/*.parquet',\n    DATA_SOURCE  = 'ds_stsyn_clintrail',\n    FORMAT ='PARQUET'\n) AS CM ;\n\n-----------------------------\n--https://stclintraildev001.blob.core.windows.net/silver/cm/part-00000-0e32cf37-60cf-4dee-a0a5-bcf4444f87ad.c000.zstd.parquet\n\nSELECT * FROM OPENROWSET\n(\n    BULK 'silver/cm',\n    DATA_SOURCE  = 'ds_stsyn_clintrail',\n    FORMAT ='DELTA'\n) AS CM ;\n\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "db_clintrail_dev",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

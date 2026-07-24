@@ -1,0 +1,17 @@
+{
+	"name": "sql_serverless_sqlpool_data_source_creation",
+	"properties": {
+		"content": {
+			"query": "-- Read the File System Data:(CSV, JSON, PARQUET, DELTA)\nCREATE DATABASE db_clintrail_dev\n-- create master key that will protect the credentials:\n\nUSE db_clintrail_dev;\n\nCREATE MASTER KEY ENCRYPTION BY PASSWORD = 'IntelliBi#757575787575'\n\n-- create credentials for containers in our demo storage account\nCREATE DATABASE SCOPED CREDENTIAL cred_db_clintrail_dev\nWITH IDENTITY = 'Managed Identity'; \n\n\nCREATE EXTERNAL DATA SOURCE ds_stsyn011_file_data WITH (\n    LOCATION = 'https://stsyndemo01.blob.core.windows.net',\n    CREDENTIAL = cred_db_clintrail_dev\n);\n\nCREATE EXTERNAL DATA SOURCE ds_stsyn_clintrail WITH (\n    LOCATION = 'https://stclintraildev001.blob.core.windows.net',\n    CREDENTIAL = cred_db_clintrail_dev\n);\n\n\n\n\n\n\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "db_clintrail_dev",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
