@@ -8,6 +8,9 @@
 		"syn-project-dev-WorkspaceDefaultSqlServer_connectionString": {
 			"value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=tcp:syn-project-dev.sql.azuresynapse.net,1433;Initial Catalog=@{linkedService().DBName}"
 		},
+		"ls_clintrail_data_properties_typeProperties_url": {
+			"value": "https://stclintraildev001.dfs.core.windows.net/"
+		},
 		"syn-project-dev-WorkspaceDefaultStorage_properties_typeProperties_url": {
 			"value": "https://stsyndemo01.dfs.core.windows.net"
 		}
