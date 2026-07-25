@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "748023cd-f601-4df4-894a-9b6ee5e4bf82"
+				"spark.autotune.trackingId": "70ed2dcf-84fc-41a6-bbb3-7d4ecc17619f"
 			}
 		},
 		"metadata": {
@@ -96,7 +96,7 @@
 					"finaldfta = dfta.select(\"STUDYID\", \"DOMAIN\",\"ARMCD\",\"ARM\",\"TAETORD\",\"ETCD\", \"ELEMENT\" ).drop_duplicates()\n",
 					"finaldfta.show()"
 				],
-				"execution_count": 10
+				"execution_count": 6
 			},
 			{
 				"cell_type": "code",
@@ -105,14 +105,14 @@
 					"\n",
 					"finaldfta.write.format('delta').mode('overwrite').save(silver_loc)"
 				],
-				"execution_count": 11
+				"execution_count": 7
 			},
 			{
 				"cell_type": "code",
 				"source": [
-					""
+					"mssparkutils.notebook.exit('Done')"
 				],
-				"execution_count": null
+				"execution_count": 8
 			},
 			{
 				"cell_type": "code",
@@ -135,7 +135,7 @@
 					"\n",
 					"dflb.show(10)"
 				],
-				"execution_count": 7
+				"execution_count": null
 			}
 		]
 	}
