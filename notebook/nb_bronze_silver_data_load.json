@@ -1,0 +1,142 @@
+{
+	"name": "nb_bronze_silver_data_load",
+	"properties": {
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "sparkpool001",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 2,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "748023cd-f601-4df4-894a-9b6ee5e4bf82"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "Synapse PySpark"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/f2a64ebe-21e2-460f-b61f-143763aba90e/resourceGroups/rg-synapse/providers/Microsoft.Synapse/workspaces/syn-project-dev/bigDataPools/sparkpool001",
+				"name": "sparkpool001",
+				"type": "Spark",
+				"endpoint": "https://syn-project-dev.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/sparkpool001",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net"
+				},
+				"sparkVersion": "3.5",
+				"nodeCount": 3,
+				"cores": 4,
+				"memory": 28,
+				"automaticScaleJobs": false
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "code",
+				"source": [
+					"print('Hello, Good Morning!')"
+				],
+				"execution_count": 2
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"bronze_file_path = 'abfss://synapse-files@stsyndemo01.dfs.core.windows.net/bronze/TA/'\n",
+					"dfta =  spark.read.parquet(bronze_file_path)"
+				],
+				"execution_count": 3
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"print(\"Total Num of Rows:\", dfta.count())"
+				],
+				"execution_count": 4
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					""
+				]
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"dfta.show()"
+				],
+				"execution_count": 5
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"finaldfta = dfta.select(\"STUDYID\", \"DOMAIN\",\"ARMCD\",\"ARM\",\"TAETORD\",\"ETCD\", \"ELEMENT\" ).drop_duplicates()\n",
+					"finaldfta.show()"
+				],
+				"execution_count": 10
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"silver_loc = \"abfss://synapse-files@stsyndemo01.dfs.core.windows.net/silver/TA/\"\n",
+					"\n",
+					"finaldfta.write.format('delta').mode('overwrite').save(silver_loc)"
+				],
+				"execution_count": 11
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					""
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					""
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					""
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"dflb = spark.read.csv('abfss://synapse-files@stsyndemo01.dfs.core.windows.net/clintrail_data_files/LB/LB.csv' , header= True)\n",
+					"\n",
+					"dflb.show(10)"
+				],
+				"execution_count": 7
+			}
+		]
+	}
+}
